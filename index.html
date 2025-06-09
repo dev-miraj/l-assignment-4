@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LWS AI Studio</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Satoshi Font -->
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Satoshi', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a0b2e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        
+
+        .search-input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header/Logo -->
+        <header class="flex items-center mb-12 justify-between">
+            <div class="flex items-center">
+                <img src="./assets/logo.svg" class="h-10" />
+            </div>
+            <ul class="ml-4 text-sm text-zinc-400 flex gap-8">
+                <a href="./index.html" class="hover:text-zinc-200 font-medium text-zinc-200 cursor-pointer transition-all">Create Image</a>
+                <a href="./downloaded.html" class="hover:text-zinc-200 cursor-pointer transition-all">Downloaded</a>
+            </ul>
+        </header>
+
+        <!-- Glow -->
+        <div class="fixed -bottom-1/4 -right-0 ">
+            <div class="h-96 w-96 bg-gradient-to-r from-pink-600 to-indigo-400 rotate-90 rounded-full blur-[180px] ">
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="relative z-10">
+            <!-- Welcome Message -->
+            <h2 class="text-4xl font-bold mb-8">Let's create a masterpiece, Alvian! <span class="text-2xl">👋</span>
+            </h2>
+
+            <!-- Search Input -->
+            <div
+                class="relative mb-8 rounded-full overflow-hidden border border-zinc-700 bg-zinc-900/10 backdrop-blur-sm">
+                <div class="flex items-center">
+                    <div class="pl-5 pr-2">
+                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Create with Prompts"
+                        class="outline-none w-full py-4 px-2 bg-transparent text-white placeholder-zinc-400 text-lg">
+                    <button class="bg-zinc-800 hover:bg-zinc-700 transition-colors p-4 mr-1 rounded-full">
+                        <svg class="w-6 h-6 text-white transform rotate-90" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Suggestions Section -->
+            <!-- Settings Panel -->
+            <div class="border border-zinc-700/70 mb-6 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="font-medium">Advanced Settings</h4>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Model Selection -->
+                    <div>
+                        <label for="model" class="block text-sm font-medium text-zinc-700 mb-1">Model</label>
+                        <select id="model"
+                            class="w-full px-3 py-2 bg-zinc-900/10 border border-zinc-700/70 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option class="bg-zinc-900" value="flux" selected>Flux</option>
+                            <option class="bg-zinc-900" value="turbo">Turbo</option>
+                        </select>
+                    </div>
+
+                    <!-- Seed Input : Auto Generated, readonly for user -->
+                    <div>
+                        <label for="seed" class="block text-sm font-medium text-zinc-700 mb-1">Seed (for reproducible
+                            results)</label>
+                        <input type="number" id="seed" disabled="true"
+                            class="w-full bg-zinc-900/10 px-3 py-2 border border-zinc-700/70 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            placeholder="Random">
+                    </div>
+
+                    <!-- Width Input -->
+                    <div>
+                        <label for="width" class="block text-sm font-medium text-zinc-700 mb-1">Width</label>
+                        <input type="number" id="width" value="1024"
+                            class="w-full bg-zinc-900/10 px-3 py-2 border border-zinc-700/70 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                    </div>
+
+                    <!-- Height Input -->
+                    <div>
+                        <label for="height" class="block text-sm font-medium text-zinc-700 mb-1">Height</label>
+                        <input type="number" id="height" value="1024"
+                            class="w-full bg-zinc-900/10 px-3 py-2 border border-zinc-700/70 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                    </div>
+
+                    <!-- Aspect Ratio Presets -->
+                    <div>
+                        <label class="block text-sm font-medium text-zinc-700 mb-1">Aspect Ratio Presets</label>
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                class="bg-zinc-900/10  px-3 py-3 text-xs  hover:bg-zinc-800 rounded transition-colors">1:1</button>
+                            <button
+                                class="bg-zinc-900/10  px-3 py-3 text-xs  hover:bg-zinc-800 rounded transition-colors">16:9</button>
+                            <button
+                                class="bg-zinc-900/10  px-3 py-3 text-xs  hover:bg-zinc-800 rounded transition-colors">4:3</button>
+                            <button
+                                class="bg-zinc-900/10  px-3 py-3 text-xs  hover:bg-zinc-800 rounded transition-colors">3:2</button>
+                        </div>
+                    </div>
+
+                    <!-- No Logo Toggle -->
+                    
+                </div>
+            </div>
+
+            <!-- Image Presets Section -->
+            <div>
+                <h3 class="text-zinc-200 mb-4 font-bold text-lg">Result</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+                    <!-- Image Card 1 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-1.jpeg" alt="Anime character in kimono"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 2 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-2.jpeg" alt="Portrait with yellow background"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 3 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-3.jpeg" alt="Fantasy landscape with castle"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 4 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-4.jpeg" alt="Colorful anime character"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 5 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-5.jpeg" alt="Abstract art"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 1 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-1.jpeg" alt="Anime character in kimono"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 2 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-2.jpeg" alt="Portrait with yellow background"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 3 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-3.jpeg" alt="Fantasy landscape with castle"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 4 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-4.jpeg" alt="Colorful anime character"
+                            class="w-full h-48 object-cover">
+                    </div>
+
+                    <!-- Image Card 5 -->
+                    <div class="image-card rounded-xl overflow-hidden cursor-pointer relative">
+                        <div class="absolute bottom-2 right-2  p-1 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image-down-icon lucide-image-down"><path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21"/><path d="m14 19 3 3v-5.5"/><path d="m17 22 3-3"/><circle cx="9" cy="9" r="2"/></svg>
+                        </div>
+                        <img src="./assets/images/ai-image-5.jpeg" alt="Abstract art"
+                            class="w-full h-48 object-cover">
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
